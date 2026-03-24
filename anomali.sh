@@ -15,11 +15,20 @@ echo ""
 
 read -p "🔗 Link Folder Google Drive: " folder_link
 
-# Ambil ID folder (lebih fleksibel)
-FOLDER_ID=$(echo "$folder_link" | sed -n 's/.*\/folders\/\([^\/?]*\).*/\1/p')
+# === PERBAIKAN: Cara mengambil ID folder yang lebih ampuh ===
+# Coba ambil dari pola "folders/ID"
+FOLDER_ID=$(echo "$folder_link" | grep -oP '(?<=folders/)[^/?]+' | head -1)
+
+# Jika gagal, coba ambil dari pola "id=ID"
 if [ -z "$FOLDER_ID" ]; then
-    FOLDER_ID=$(echo "$folder_link" | grep -o '1[A-Za-z0-9_-]*')
+    FOLDER_ID=$(echo "$folder_link" | grep -oP '(?<=id=)[^&]+' | head -1)
 fi
+
+# Jika masih gagal, coba ambi pola ID Google Drive (huruf, angka, underscore, strip)
+if [ -z "$FOLDER_ID" ]; then
+    FOLDER_ID=$(echo "$folder_link" | grep -oE '[0-9A-Za-z_-]{28,}' | head -1)
+fi
+# ===========================================
 
 if [ -z "$FOLDER_ID" ]; then
     echo -e "\n${R}[!] Link tidak valid!${NC}"
