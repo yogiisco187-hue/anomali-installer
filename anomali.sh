@@ -15,14 +15,15 @@ echo ""
 
 read -p "🔗 Link Folder Google Drive: " folder_link
 
-# Ambil ID folder
-FOLDER_ID=$(echo "$folder_link" | sed 's/.*folders\/\([^?]*\).*/\1/' | cut -d'/' -f1)
+# Ambil ID folder (cara sederhana)
+FOLDER_ID=$(echo "$folder_link" | grep -o 'folders/[^/?]*' | cut -d'/' -f2)
 
 if [ -z "$FOLDER_ID" ]; then
     echo -e "\n${R}[!] Link tidak valid!${NC}"
     exit 1
 fi
 
+echo -e "\n${Y}[✓] Folder ID: ${C}$FOLDER_ID${NC}"
 echo -e "\n${Y}[~] Installing gdown...${NC}"
 pip install gdown -q 2>/dev/null
 
