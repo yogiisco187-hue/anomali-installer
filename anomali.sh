@@ -15,23 +15,20 @@ echo ""
 
 read -p "🔗 Link Folder Google Drive: " folder_link
 
-# Ambil ID folder dari berbagai format link
-FOLDER_ID=$(echo "$folder_link" | grep -oP '(?<=folders/)[^/?]+|(?<=id=)[^&]+' | head -1)
-
-# Jika masih kosong, coba cara lain
+# Ambil ID folder (lebih fleksibel)
+FOLDER_ID=$(echo "$folder_link" | sed -n 's/.*\/folders\/\([^\/?]*\).*/\1/p')
 if [ -z "$FOLDER_ID" ]; then
-    FOLDER_ID=$(echo "$folder_link" | sed -n 's/.*folders\/\([^\/?]*\).*/\1/p')
+    FOLDER_ID=$(echo "$folder_link" | grep -o '1[A-Za-z0-9_-]*')
 fi
 
 if [ -z "$FOLDER_ID" ]; then
     echo -e "\n${R}[!] Link tidak valid!${NC}"
-    echo -e "${Y}Coba gunakan format:${NC}"
-    echo -e "${C}https://drive.google.com/drive/folders/XXXXXXXXXXX${NC}"
+    echo -e "${Y}Pastikan link seperti:${NC}"
+    echo -e "${C}https://drive.google.com/drive/folders/1NTAzQEj_thsZEgWJ04omFXmuwJghRd2Y${NC}"
     exit 1
 fi
 
-echo -e "\n${Y}[✓] Folder ID terdeteksi: ${C}$FOLDER_ID${NC}"
-
+echo -e "\n${Y}[✓] Folder ID: ${C}$FOLDER_ID${NC}"
 echo -e "\n${Y}[~] Menginstall gdown...${NC}"
 pip install gdown -q 2>/dev/null
 
