@@ -15,11 +15,13 @@ echo ""
 
 read -p "🔗 Link Folder Google Drive: " folder_link
 
-# Ambil ID folder (cara sederhana)
-FOLDER_ID=$(echo "$folder_link" | grep -o 'folders/[^/?]*' | cut -d'/' -f2)
+# Cara paling sederhana ambil ID folder
+FOLDER_ID=$(echo "$folder_link" | awk -F 'folders/' '{print $2}' | cut -d'/' -f1 | cut -d'?' -f1)
 
 if [ -z "$FOLDER_ID" ]; then
     echo -e "\n${R}[!] Link tidak valid!${NC}"
+    echo -e "${Y}Contoh link yang benar:${NC}"
+    echo -e "${C}https://drive.google.com/drive/folders/1NTAzQEj_thsZEgWJ04omFXmuwJghRd2Y${NC}"
     exit 1
 fi
 
