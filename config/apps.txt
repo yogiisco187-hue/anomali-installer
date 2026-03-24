@@ -1,0 +1,12 @@
+# Daftar link aplikasi
+# Format: satu link per baris
+# Baris yang diawali # akan diabaikan
+
+# WhatsApp
+https://drive.google.com/file/d/ABC123xyz/view
+
+# Instagram
+https://drive.google.com/file/d/DEF456uvw/view
+
+# Facebook
+https://drive.google.com/open?id=GHI789rst
